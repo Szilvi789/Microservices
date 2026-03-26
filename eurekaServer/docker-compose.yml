@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  eureka-server:
+    image: openjdk:17
+    container_name: eurekaServer
+    ports:
+      - "8761:8761"
+    environment:
+      - SERVER_PORT=8761
+    volumes:
+      - ./target:/app
+    working_dir: /app
+    command: ["java", "-jar", "eurekaServer-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - mongodb-inventory
+      - mongodb-order
+
+  mongodb-inventory:
+    image: mongo:7.0.5
+    container_name: mongodb-inventory-service
+    ports:
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: inventory-service
+    volumes:
+      - ./data/inventory:/data/db
+
+  mongodb-order:
+    image: mongo:7.0.5
+    container_name: mongodb-order-service
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: order-service
+    volumes:
+      - ./data/order:/data/db
+
+  mongodb-product:
+    image: mongo:7.0.5
+    container_name: mongodb-product-service
+    ports:
+      - "27017:27017"
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: password
+        MONGO_INITDB_DATABASE: product-service
+    volumes:
+        - ./data/product:/data/db

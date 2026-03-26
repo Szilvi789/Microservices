@@ -1,0 +1,13 @@
+.DS_Store
+*.zip
+
+# Local database files
+**/data/
+
+# Build output
+**/target/
+
+# IDE files
+**/.idea/
+**/*.iml
+.vscode/
